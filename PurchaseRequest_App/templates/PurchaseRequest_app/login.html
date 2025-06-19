@@ -1,0 +1,27 @@
+
+{% extends 'PurchaseRequest_App/base.html' %}
+{% block content %}
+    <div class="max-w-md mx-auto mt-10 p-8 bg-white rounded shadow">
+        <h1 class="text-2xl font-bold mb-6 text-center">Login</h1>
+        {% if errors %}
+            <ul class="mb-4 text-red-600">
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="username" class="block font-semibold mb-1">Username:</label>
+                <input type="text" id="username" name="username" class="w-full border p-2 rounded" required value="{{ username|default:'' }}">
+            </div>
+            <div>
+                <label for="password" class="block font-semibold mb-1">Password:</label>
+                <input type="password" id="password" name="password" class="w-full border p-2 rounded" required>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</button>
+        </form>
+        <p class="mt-4 text-center">Don't have an account? <a href="{% url 'signup' %}" class="text-blue-600 hover:underline">Sign up</a></p>
+    </div>
+{% endblock %}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My Site{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .content {
+            flex: 1;
+        }
+        footer {
+            background: #141414;
+            text-align: center;
+            color: white;
+            padding: 1em 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    {% if user.is_authenticated %}
+        <nav class="bg-blue-600 p-4 text-white shadow-md">
+            <div class="container mx-auto flex justify-between items-center">
+                <a href="{% url 'home' %}" class="font-bold text-xl">Purchase Request App</a>
+                <div class="space-x-4">
+                    <span class="font-semibold">{{ user.username }} ({{ user.is_manager|yesno:"Manager,Employee" }})</span>
+                    <a href="{% url 'request_list' %}" class="hover:underline">Requests</a>
+                    {% if not user.is_manager %}
+                        <a href="{% url 'request_create' %}" class="hover:underline">New Request</a>
+                    {% endif %}
+                    <a href="{% url 'logout' %}" class="hover:underline">Logout</a>
+                    
+                    {% if user.is_manager %}
+                        <a href="{% url 'manager_dashboard' %}" class="hover:underline">Manager Dashboard</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    {% endif %}
+
+    <div class="container mx-auto p-6 content">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="bg-{% if message.tags == 'success' %}green{% else %}red{% endif %}-100 p-4 mb-4 rounded-lg shadow">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+
+    </div>
+    <footer>
+        &copy; {{ year|default:2025 }} Purchase Request App. All rights reserved.
+    </footer>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Requester Profile</title>
+    <link rel="stylesheet" href="{% static 'PurchaseRequest_app/styles.css' %}">
+</head>
+<body>
+    <div class="profile-container">
+        <h1>Manager Profile</h1>
+        <div class="profile-details">
+            <form method="post" action="{% url 'manager_profile_edit' %}">
+                {% csrf_token %}
+                <p><strong>Name:</strong>
+                    <input type="text" name="name" value="{{ manager.name }}" {% if not editing %}readonly{% endif %}>
+                </p>
+                <p><strong>Email:</strong>
+                    <input type="email" name="email" value="{{ manager.email }}" {% if not editing %}readonly{% endif %}>
+                </p>
+                <p><strong>Phone Number:</strong>
+                    <input type="text" name="phone_number" value="{{ manager.phone_number }}" {% if not editing %}readonly{% endif %}>
+                </p>
+                <p><strong>Address:</strong>
+                    <input type="text" name="address" value="{{ manager.address }}" {% if not editing %}readonly{% endif %}>
+                </p>
+                <p><strong>Gender:</strong>
+                    <input type="text" name="gender" value="{{ manager.gender }}" {% if not editing %}readonly{% endif %}>
+                </p>
+                <p><strong>Department:</strong>
+                    <input type="text" name="department" value="{{ manager.department }}" {% if not editing %}readonly{% endif %}>
+                </p>
+                <p><strong>Employee ID:</strong>
+                    <input type="text" name="employee_id" value="{{ manager.employee_id }}" {% if not editing %}readonly{% endif %}>
+                <p><strong>Position:</strong>
+                    <input type="text" name="position" value="{{ manager.position }}" {% if not editing %}readonly{% endif %}>
+                </p>
+                <div class="profile-actions">
+                    {% if editing %}
+                        <button type="submit" name="save">Save Changes</button>
+                        <a href="{% url 'manager_profile' %}">Cancel</a>
+                    {% else %}
+                        <a href="{% url 'manager_profile_edit' %}">Edit</a>
+                        <a href="{% url 'manager_profile_delete' %}" onclick="return confirm('Are you sure you want to delete your profile?');">Delete</a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</body>
+</html>

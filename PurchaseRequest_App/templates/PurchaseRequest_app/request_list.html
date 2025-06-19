@@ -1,0 +1,42 @@
+{% extends 'PurchaseRequest_App/base.html' %}
+{% block content %}
+    <h1 class="text-2xl font-bold mb-6">Purchase Requests</h1>
+    <table class="w-full border-collapse border bg-white shadow-md">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="border p-3 text-left">Item</th>
+                <th class="border p-3 text-left">Description</th>
+                <th class="border p-3 text-left">Amount</th>
+                <th class="border p-3 text-left">Status</th>
+                <th class="border p-3 text-left">Document</th>
+                {% if user.is_manager %}
+                    <th class="border p-3 text-left">Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+                <tr class="hover:bg-gray-50">
+                    <td class="border p-3">{{ request.item }}</td>
+                    <td class="border p-3">{{ request.description|truncatewords:20 }}</td>
+                    <td class="border p-3">${{ request.amount }}</td>
+                    <td class="border p-3 {{ request.status|lower }}-status">{{ request.status }}</td>
+                    <td class="border p-3">
+                        {% if request.document %}
+                            <a href="{{ request.document.url }}" class="text-blue-600 hover:underline" target="_blank">View</a>
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
+                    {% if user.is_manager %}
+                        <td class="border p-3">
+                            {% if request.status == 'PENDING' %}
+                                <a href="{% url 'request_approve' request.id %}" class="text-blue-600 hover:underline">Approve/Reject</a>
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'PurchaseRequest_App/base.html' %}
+{% block content %}
+    <h1 class="text-3xl font-bold mb-6">Welcome, {{ user.username }}!</h1>
+    <p class="text-lg">Manage your purchase requests or approve pending requests as a manager.</p>
+    <div class="mt-4">
+        <a href="{% url 'request_list' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">View Requests</a>
+        {% if not user.is_manager %}
+            <a href="{% url 'request_create' %}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 ml-2">New Request</a>
+        {% endif %}
+    </div>
+{% endblock %}
